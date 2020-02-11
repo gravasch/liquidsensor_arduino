@@ -1,6 +1,5 @@
 /*
  * 
- * 
  * Add the Lcd display and Sim900 module.
  * Lcd display used for showing messages to the user.
  * The Sim900 is a module that helps to send SMS messages.  
@@ -13,9 +12,76 @@
 // Configure software serial port
 SoftwareSerial SIM900(7, 8); 
 LiquidCrystal lcd(12, 11, 5, 4, 3, 2);
+boolean layer_Low = 0;
+boolean layer_Normal = 0; 
+boolean layer_High = 0;
+String layerText="";
+
+void sendSMS();
 
 
-bool sendSMS() {
+
+
+void setup() {
+
+  // set up the LCD's number of columns and rows:
+  lcd.begin(16, 2);
+  // Print a message to the LCD.
+  lcd.print(" Liquid Sensor");
+  
+  // Arduino communicates with SIM900 GSM shield at a baud rate of 19200
+  // Make sure that corresponds to the baud rate of your module
+  SIM900.begin(19200);
+  // Give time to your GSM shield log on to network
+  //delay(20000);   
+  
+  // Send the SMS
+
+}
+
+
+void loop() {
+  layer_Low = digitalRead(13);
+  layer_Normal = digitalRead(10);
+  layer_High = digitalRead(9);
+  
+
+    if (layer_Low== 0 && layer_Normal == 0 && layer_High == 0){
+      
+        lcd.setCursor(0, 0);
+        lcd.print(" Liquid Sensor");      
+        lcd.setCursor(0, 1);
+        lcd.print("Liquid layer Low");
+      }
+    if (layer_Low== 1 && layer_Normal == 0 && layer_High == 0){ 
+      
+        lcd.setCursor(0, 0);
+        lcd.print(" Liquid Sensor");
+        lcd.setCursor(0, 1);
+        lcd.print("Liquid layer Normal");
+      }
+    if (layer_Low== 1 && layer_Normal == 1 && layer_High == 0){
+      
+        lcd.setCursor(0, 0);
+        lcd.print(" Liquid Sensor");
+        lcd.setCursor(0, 1);
+        lcd.print("Liquid layer High");
+      }
+    if (layer_Low== 1 && layer_Normal == 1 && layer_High == 1){
+      
+        
+        lcd.setCursor(0, 0);
+        lcd.print("     Danger!    ");        
+        lcd.setCursor(0, 1);
+        lcd.print("Very High layer ");
+      }
+
+}
+
+
+
+
+void sendSMS() {
   // AT command to set SIM900 to SMS mode
   SIM900.print("AT+CMGF=1\r"); 
   delay(100);
@@ -35,34 +101,5 @@ bool sendSMS() {
   SIM900.println();
   // Give module time to send SMS
   delay(5000); 
-  return 1;
-}
 
-
-void setup() {
-  // set up the LCD's number of columns and rows:
-  lcd.begin(16, 2);
-  // Print a message to the LCD.
-  lcd.print("hello, world!");
-  
-  // Arduino communicates with SIM900 GSM shield at a baud rate of 19200
-  // Make sure that corresponds to the baud rate of your module
-  SIM900.begin(19200);
-  // Give time to your GSM shield log on to network
-  delay(20000);   
-  
-  // Send the SMS
-  if (sendSMS()){
-   lcd.setCursor(0, 1);
-  // print the number of seconds since reset:
-  lcd.print("aaaaaaaaa");
-}}
-
-
-void loop() {
-  // set the cursor to column 0, line 1
-  // (note: line 1 is the second row, since counting begins with 0):
-  lcd.setCursor(0, 1);
-  // print the number of seconds since reset:
-  lcd.print(millis() / 1000);
 }
