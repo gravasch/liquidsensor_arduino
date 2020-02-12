@@ -2,7 +2,7 @@
  * Liquidsensor Arduino 
  * This program running on Arduino Uno.
  * it observes the level of the Liquid and updates the LCD screen about the level.
- * when the liquid level is very high the SIM900 module sends a message to inform the user about the danger. 
+ * when the liquid level is very high the buzzer ring and the SIM900 module sends a message to inform the user about the danger. 
  * Add the Lcd display and Sim900 module.
  * Lcd display used for showing messages to the user.
  * The SIM900 is a module that helps to send SMS messages.  
@@ -20,6 +20,7 @@ boolean layer_Normal = 0;
 boolean layer_High = 0;
 String layerText=""; 
 int counterTime=0;
+int peizoPin=A1;
 
 void sendSMS(); // this faction send the SMS by the SMS900 module
 
@@ -30,7 +31,8 @@ void setup() {
   lcd.begin(16, 2);
   // Print a message to the LCD.
   lcd.print(" Liquid Sensor  ");
-  
+  tone(peizoPin,3000,500);
+ delay(1000);
   // Arduino communicates with SIM900 GSM shield at a baud rate of 19200
   // Make sure that corresponds to the baud rate of your module
   SIM900.begin(19200);
@@ -77,7 +79,7 @@ void loop() {
         lcd.setCursor(0, 1);
         lcd.print("Very High layer ");
         if (counterTime == 0){
-          sendSMS();
+         // sendSMS();
            lcd.setCursor(0, 0);
         lcd.print(" Senting message  ");
         delay(10000);
@@ -85,6 +87,12 @@ void loop() {
           } else { 
             counterTime = counterTime - 1 ;
             }
+        tone(peizoPin,3000,500);
+        delay(1000);
+        tone(peizoPin,3000,500);
+        delay(1000);        
+        tone(peizoPin,3000,500);
+        delay(1000);
       }
 
 }
