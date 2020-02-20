@@ -39,7 +39,6 @@ void setup() {
   // Give time to your GSM shield log on to network
   delay(20000);   
   
-  // Send the SMS
 
 }
 
@@ -79,9 +78,9 @@ void loop() {
         lcd.setCursor(0, 1);
         lcd.print("Very High layer ");
         if (counterTime == 0){
-         // sendSMS();
-           lcd.setCursor(0, 0);
-        lcd.print(" Senting message  ");
+          sendSMS();
+          lcd.setCursor(0, 0);
+          lcd.print(" Senting message  ");
         delay(10000);
           counterTime = 360000;
           } else { 
