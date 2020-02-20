@@ -80,8 +80,8 @@ void loop() {
         if (counterTime == 0){
           sendSMS();
           lcd.setCursor(0, 0);
-          lcd.print(" Senting message  ");
-        delay(10000);
+          lcd.print(" Sending message  ");
+          delay(10000);
           counterTime = 360000;
           } else { 
             counterTime = counterTime - 1 ;
