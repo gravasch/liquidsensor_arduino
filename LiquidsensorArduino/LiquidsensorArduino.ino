@@ -11,28 +11,25 @@
 #include <LiquidCrystal.h>
 #include <SoftwareSerial.h>
 
+// αρχικοποιούμε τις πόρτες του Arduino 
+  
+SoftwareSerial SIM900(7, 8); 
+LiquidCrystal lcd(12, 11, 5, 4, 3, 2);
+int peizoPin=A1;
 
 
+//αρχικοποίηση μεταβλητών
+  
+boolean layer_Low = 0;     // Μεταβλητή πρώτου αισθητήρα υδάτων 
+boolean layer_Normal = 0;  //Μεταβλητή δεύτερου αισθητήρα υδάτων 
+boolean layer_High = 0;   //Μεταβλητή τρίτου  αισθητήρα υδάτων 
+String layerText="";      //Μεταβλητή κειμένου 
+int counterTime=0;        //Μεταβλητή - μετρητής προσπαθιών...  όταν 0 επιτρέπει την κάρτα SIM να στείλει μήνυμα
 
 void sendSMS();         // δηλώνουμε την συνάρτηση αποστολής μηνυμάτων 
 
-void setup() {               //Η συνάρτηση setup() εκτελείται μία φορά όταν το Arduino ανοίξει 
-  
-  // αρχικοποιούμε τις πόρτες του Arduino 
-  
-  SoftwareSerial SIM900(7, 8); 
-  LiquidCrystal lcd(12, 11, 5, 4, 3, 2);
-  int peizoPin=A1;
-  
-  //αρχικοποίηση μεταβλητών
-  
-  boolean layer_Low = 0;     // Μεταβλητή πρώτου αισθητήρα υδάτων 
-  boolean layer_Normal = 0;  //Μεταβλητή δεύτερου αισθητήρα υδάτων 
-  boolean layer_High = 0;   //Μεταβλητή τρίτου  αισθητήρα υδάτων 
-  String layerText="";      //Μεταβλητή κειμένου 
-  int counterTime=0;        //Μεταβλητή - μετρητής προσπαθιών...  όταν 0 επιτρέπει την κάρτα SIM να στείλει μήνυμα
-         
-  
+
+void setup() {               //Η συνάρτηση setup() εκτελείται μία φορά όταν το Arduino ανοίξει   
   lcd.begin(16, 2);               // ορίζουμε τις γραμμές και της στίλες που έχει η LCD οθόνη 
   lcd.print(" Liquid Sensor  ");  // τυπώνουμε μήνυμα στην οθόνη 
   tone(peizoPin,3000,500);        //ορίζουμε συχνότητα και διάρκεια στο ηχείο  buzzer .
